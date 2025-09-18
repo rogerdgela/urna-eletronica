@@ -1,125 +1,31 @@
-let seuVotoPara = document.querySelector(".d-1-1 span");
-let cargo = document.querySelector(".d-1-2 span");
-let descricao = document.querySelector(".d-1-4");
-let aviso = document.querySelector(".d-2");
-let lateral = document.querySelector(".d-1-right");
-let numeros = document.querySelector(".d-1-3");
+// Função que retorna um único elemento do DOM usando querySelector
+const select = (el) => {
+    return document.querySelector(el);
+};
 
-let etapaAtual = 0;
-let numero = "";
-let votoBranco = false;
-let votos = [];
+// Função que retorna múltiplos elementos do DOM usando querySelectorAll
+const selectAll = (el) => {
+    return document.querySelectorAll(el);
+};
 
-function comecarEtapa() {
-    let etapa = etapas[etapaAtual];
+// Variáveis globais que armazenam referências a elementos do DOM
 
-    let numeroHtml = "";
-    numero = "";
-    votoBranco = false;
+// Seleciona o elemento span dentro da classe d-1-1
+// Este elemento provavelmente mostra o texto "SEU VOTO PARA"
+let seuVotoPara = select('.d-1-1 span');
 
-    for (let i = 0; i < etapa.numeros; i++) {
-        if (i === 0) {
-            numeroHtml += '<div class="numero pisca"></div>';
-        } else {
-            numeroHtml += '<div class="numero"></div>';
-        }
-    }
+// Seleciona o elemento span dentro da classe d-1-2
+// Este elemento mostra o cargo atual em votação (ex: vereador, prefeito)
+let cargo = select('.d-1-2 span');
 
-    seuVotoPara.style.display = "none";
-    cargo.innerHTML = etapa.titulo;
-    descricao.innerHTML = "";
-    aviso.style.display = "none";
-    lateral.innerHTML = "";
-    numeros.innerHTML = numeroHtml;
-}
-function atualizaInterface() {
-    let etapa = etapas[etapaAtual];
-    let candidato = etapa.candidatos.filter((item) => {
-        if (item.numero === numero) {
-            return true;
-        } else {
-            return false;
-        }
-    });
-    if (candidato.length > 0) {
-        candidato = candidato[0];
-        seuVotoPara.style.display = "block";
-        aviso.style.display = "block";
-        descricao.innerHTML = `Nome: ${candidato.nome}<br/>Partido: ${candidato.partido}`;
-        let fotosHtml = "";
-        for (let i in candidato.fotos) {
-            if (candidato.fotos[i].small) {
-                fotosHtml += `<div class="d-1-image small"><img src="src/assets/images/${candidato.fotos[i].url}" alt="" />${candidato.fotos[i].legenda}</div>`;
-            } else {
-                fotosHtml += `<div class="d-1-image"><img src="src/assets/images/${candidato.fotos[i].url}" alt="" />${candidato.fotos[i].legenda}</div>`;
-            }
-        }
-        lateral.innerHTML = fotosHtml;
-    } else {
-        seuVotoPara.style.display = "block";
-        aviso.style.display = "block";
-        descricao.innerHTML =
-            '<div class="aviso--grande pisca">VOTO NULO</div>';
-    }
-}
+// Seleciona o elemento com a classe d-1-3
+// Este elemento mostra as informações do candidato quando os números são digitados
+let descricao = select('.d-1-4');
 
-function clicou(n) {
-    let elNumero = document.querySelector(".numero.pisca");
-    if (elNumero !== null) {
-        elNumero.innerHTML = n;
-        numero = `${numero}${n}`;
+// Seleciona o elemento com a classe d-2
+// Este elemento mostra mensagens de aviso ou instruções para o eleitor
+let aviso = select('.d-2');
 
-        elNumero.classList.remove("pisca");
-        if (elNumero.nextElementSibling !== null) {
-            elNumero.nextElementSibling.classList.add("pisca");
-        } else {
-            atualizaInterface();
-        }
-    }
-}
-function branco() {
-    numero = "";
-    votoBranco = true;
-
-    seuVotoPara.style.display = "block";
-    aviso.style.display = "block";
-    numeros.innerHTML = "";
-    descricao.innerHTML =
-        '<div class="aviso--grande pisca">VOTO EM BRANCO</div>';
-    lateral.innerHTML = "";
-}
-function corrige() {
-    comecarEtapa();
-}
-function confirma() {
-    let etapa = etapas[etapaAtual];
-
-    let votoConfirmado = false;
-
-    if (votoBranco === true) {
-        votoConfirmado = true;
-        votos.push({
-            etapa: etapas[etapaAtual].titulo,
-            voto: "branco",
-        });
-    } else if (numero.length === etapa.numeros) {
-        votoConfirmado = true;
-        votos.push({
-            etapa: etapas[etapaAtual].titulo,
-            voto: numero,
-        });
-    }
-
-    if (votoConfirmado) {
-        etapaAtual++;
-        if (etapas[etapaAtual] !== undefined) {
-            comecarEtapa();
-        } else {
-            document.querySelector(".tela").innerHTML =
-                '<div class="aviso--gigante pisca">FIM</div>';
-            console.log(votos);
-        }
-    }
-}
-
-comecarEtapa();
+// Seleciona o elemento com a classe d-1-right
+// Este elemento representa a área lateral direita da interface, onde aparece a foto do candidato
+let lateral = select('.d-1-right'); 
