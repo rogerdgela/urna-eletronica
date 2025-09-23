@@ -8,24 +8,59 @@ const selectAll = (el) => {
     return document.querySelectorAll(el);
 };
 
-// Variáveis globais que armazenam referências a elementos do DOM
-
-// Seleciona o elemento span dentro da classe d-1-1
-// Este elemento provavelmente mostra o texto "SEU VOTO PARA"
 let seuVotoPara = select('.d-1-1 span');
-
-// Seleciona o elemento span dentro da classe d-1-2
-// Este elemento mostra o cargo atual em votação (ex: vereador, prefeito)
 let cargo = select('.d-1-2 span');
-
-// Seleciona o elemento com a classe d-1-3
-// Este elemento mostra as informações do candidato quando os números são digitados
 let descricao = select('.d-1-4');
-
-// Seleciona o elemento com a classe d-2
-// Este elemento mostra mensagens de aviso ou instruções para o eleitor
 let aviso = select('.d-2');
-
-// Seleciona o elemento com a classe d-1-right
-// Este elemento representa a área lateral direita da interface, onde aparece a foto do candidato
 let lateral = select('.d-1-right'); 
+let numeros = select('.d-1-3');
+
+let etapaAtual = 0;
+let numero = 0;
+
+function comecarEtapa() {
+    let etapa = etapas[etapaAtual];
+
+    let numerosHtml = '';
+
+    for (let i = 0; i < etapa.numeros; i++) {
+        if (i === 0) {
+            numerosHtml += '<div class="numero pisca"></div>';
+        } else {
+            numerosHtml += '<div class="numero"></div>';
+        }
+    }
+
+    seuVotoPara.innerHTML = 'Seu voto para';
+    cargo.innerHTML = etapa.titulo;
+    descricao.innerHTML = '';
+    aviso.style.display = 'none';
+    lateral.innerHTML = '';
+    numeros.innerHTML = numerosHtml;
+}
+
+function atualizaInterface() {
+}
+
+function clicou(n) {
+    let elNumero = select('.numero.pisca');
+    if (elNumero != null) {
+        elNumero.innerHTML = n;
+        numero = `${numero}${n}`;
+
+        elNumero.classList.remove('pisca');
+        if (elNumero.nextElementSibling !== null) {
+            elNumero.nextElementSibling.classList.add('pisca');
+        } else {
+            atualizaInterface();
+        }
+    }
+}
+
+function branco() {}
+
+function corrige() {}
+
+function confirma() {}
+
+comecarEtapa();
