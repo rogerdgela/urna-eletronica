@@ -12,11 +12,11 @@ let seuVotoPara = select('.d-1-1 span');
 let cargo = select('.d-1-2 span');
 let descricao = select('.d-1-4');
 let aviso = select('.d-2');
-let lateral = select('.d-1-right'); 
+let lateral = select('.d-1-right');
 let numeros = select('.d-1-3');
 
 let etapaAtual = 0;
-let numero = 0;
+let numero = '';
 
 function comecarEtapa() {
     let etapa = etapas[etapaAtual];
@@ -40,6 +40,33 @@ function comecarEtapa() {
 }
 
 function atualizaInterface() {
+    let etapa = etapas[etapaAtual];
+
+    let candidato = etapa.candidatos.filter((item) => {
+        if (item.numero === numero) {
+            return true;
+        }
+
+        return false;
+    });
+    
+    if (candidato.length > 0) {
+        candidato = candidato[0];
+        seuVotoPara.style.display = 'block';
+        aviso.style.display = 'block';
+        descricao.innerHTML = `Nome: ${candidato.nome}<br/>Partido: ${candidato.partido}`;
+
+        let fotosHtml = '';
+        for (let i in candidato.fotos) {
+            fotosHtml += `<div class="d-1-image"><img src="src/assets/images/${candidato.fotos[i].url}" alt="${candidato.nome}" />${candidato.fotos[i].legenda}</div>`;
+        }
+
+        lateral.innerHTML = fotosHtml;
+    } else {
+        seuVotoPara.style.display = 'block';
+        aviso.style.display = 'block';
+        descricao.innerHTML = '<div class="aviso--grande pisca">Voto em branco</div>';
+    }
 }
 
 function clicou(n) {
@@ -57,10 +84,10 @@ function clicou(n) {
     }
 }
 
-function branco() {}
+function branco() { }
 
-function corrige() {}
+function corrige() { }
 
-function confirma() {}
+function confirma() { }
 
 comecarEtapa();
