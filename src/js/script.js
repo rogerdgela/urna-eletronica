@@ -61,7 +61,11 @@ function atualizaInterface() {
 
         let fotosHtml = '';
         for (let i in candidato.fotos) {
-            fotosHtml += `<div class="d-1-image"><img src="src/assets/images/${candidato.fotos[i].url}" alt="${candidato.nome}" />${candidato.fotos[i].legenda}</div>`;
+            if (candidato.fotos[i].small) {
+                fotosHtml += `<div class="d-1-image small"><img src="src/assets/images/${candidato.fotos[i].url}" alt="${candidato.nome}" />${candidato.fotos[i].legenda}</div>`;
+            } else {    
+                fotosHtml += `<div class="d-1-image"><img src="src/assets/images/${candidato.fotos[i].url}" alt="${candidato.nome}" />${candidato.fotos[i].legenda}</div>`;
+            }
         }
 
         lateral.innerHTML = fotosHtml;
@@ -104,6 +108,27 @@ function corrige() {
     comecarEtapa();
 }
 
-function confirma() { }
+function confirma() { 
+    let etapa = etapas[etapaAtual];
+
+    let votoConfirmado = false;
+
+    if (votoBranco) {
+        votoConfirmado = true;
+        alert('Voto em branco confirmado');
+    } else if (numero.length === etapa.numeros) {
+        votoConfirmado = true;
+        alert('Confirmado o voto para o número: ' + numero);
+    }
+
+    if (votoConfirmado) {
+        etapaAtual++;
+        if (etapas.length !== etapaAtual) {
+            comecarEtapa();
+        } else {
+            alert('Votação concluída');
+        }
+    }
+}
 
 comecarEtapa();
